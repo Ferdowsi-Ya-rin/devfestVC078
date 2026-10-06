@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tender Package Builder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<style>
+:root{--ink:#14232b;--mut:#5b6b73;--bg:#f3f6f7;--card:#fff;--line:#d5dde0;--acc:#0d5c73;--ok:#1b7a3e;--bad:#b3261e;--warn:#9a6700}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Segoe UI","Noto Sans Bengali",system-ui,sans-serif}
+header{background:var(--acc);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+h1{font-size:1.25rem;margin:0}h2{font-size:1.1rem;margin:0 0 10px}
+main{max-width:1000px;margin:0 auto;padding:16px}
+section{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:16px}
+button,.btn,select,input{font:inherit}
+button,.btn{background:var(--acc);color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer;text-decoration:none;display:inline-block}
+button:disabled{background:#9aa9ae;cursor:not-allowed}button.sec{background:#fff;color:var(--acc);border:1px solid var(--acc)}
+button.rm{background:#fff;color:var(--bad);border:1px solid var(--bad);padding:2px 10px}
+:focus-visible{outline:3px solid #f0a500;outline-offset:2px}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:0}dt{color:var(--mut)}dd{margin:0}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tw{overflow-x:auto}
+.st{font-weight:600;padding:2px 10px;border-radius:12px;white-space:nowrap}
+.ok{background:#dff3e5;color:var(--ok)}.missing,.expired{background:#fde4e2;color:var(--bad)}.need{background:#fff1cf;color:var(--warn)}.notprov{background:#e8edee;color:var(--mut)}
+.dup{color:var(--bad);font-weight:600}.msg{background:#fde4e2;color:var(--bad);padding:6px 10px;border-radius:6px;margin:6px 0}
+.drop{border:2px dashed var(--acc);border-radius:8px;padding:16px;text-align:center;margin-bottom:10px}
+.why{background:#fff1cf;border-radius:6px;padding:8px 14px;margin:10px 0}.why ul{margin:4px 0;padding-left:20px}
+.good{background:#dff3e5;border-radius:6px;padding:8px 14px;margin:10px 0}
+</style></head><body>
+<header><h1 id="ttl"></h1><button class="sec" id="lang"></button></header>
+<main id="app"></main>
+<script>
+const T={en:{ttl:"Tender Package Builder",lang:"বাংলা",s1:"1. Open the requirements file",pick:"Choose requirements.json",none:"No file opened yet.",id:"Tender ID",title:"Title",pe:"Procuring entity",bidder:"Bidder",dl:"Submission deadline",
+s2:"2. Upload PDF files",drop:"Choose PDF files (many at once)",fn:"File",pg:"Pages",rm:"Remove",dup:"Duplicate of",nofiles:"No files uploaded yet.",notpdf:"is not a PDF and was rejected.",bad:"is damaged or password-protected and was rejected.",
+s3:"3. Match files and enter expiry dates",doc:"Document",req:"Required",opt:"Optional",mand:"Mandatory",file:"File",exp:"Expiry date",status:"Status",sel:"— choose a file —",
+missing:"Missing",need:"Expiry date needed",expired:"Expired",notprov:"Not provided",ok:"OK",
+s4:"4. Make the package",needreq:"Open requirements.json in step 1 to start matching.",auto:"Auto-match by file name",unm:"Files not matched yet:",nolib:"The PDF library could not load. Check your internet connection and reload the page.",gen:"Generate package",blocked:"The package cannot be made yet:",ready:"All checks passed. You can generate the package.",done:"Package ready. Download it:",dlb:"Download",pages:"pages",start:"starts on page",cov:"Tender Document Package",made:"Date made",inc:"Included documents"},
+bn:{ttl:"টেন্ডার প্যাকেজ বিল্ডার",lang:"English",s1:"১. প্রয়োজনীয়তার ফাইল খুলুন",pick:"requirements.json বাছাই করুন",none:"এখনও কোনো ফাইল খোলা হয়নি।",id:"টেন্ডার আইডি",title:"শিরোনাম",pe:"ক্রয়কারী প্রতিষ্ঠান",bidder:"দরদাতা",dl:"জমার শেষ তারিখ",
+s2:"২. পিডিএফ ফাইল আপলোড করুন",drop:"পিডিএফ ফাইল বাছাই করুন (একসাথে অনেক)",fn:"ফাইল",pg:"পৃষ্ঠা",rm:"মুছুন",dup:"ডুপ্লিকেট:",nofiles:"এখনও কোনো ফাইল আপলোড হয়নি।",notpdf:"পিডিএফ নয়, তাই বাদ দেওয়া হয়েছে।",bad:"নষ্ট বা পাসওয়ার্ড দেওয়া, তাই বাদ দেওয়া হয়েছে।",
+s3:"৩. ফাইল মেলান ও মেয়াদের তারিখ দিন",doc:"ডকুমেন্ট",req:"প্রয়োজন",opt:"ঐচ্ছিক",mand:"বাধ্যতামূলক",file:"ফাইল",exp:"মেয়াদ শেষের তারিখ",status:"অবস্থা",sel:"— ফাইল বাছাই করুন —",
+missing:"অনুপস্থিত",need:"মেয়াদের তারিখ দরকার",expired:"মেয়াদোত্তীর্ণ",notprov:"দেওয়া হয়নি",ok:"ঠিক আছে",
+s4:"৪. প্যাকেজ তৈরি করুন",needreq:"মেলানো শুরু করতে ধাপ ১-এ requirements.json খুলুন।",auto:"ফাইলের নাম দেখে নিজে নিজে মেলান",unm:"এখনও মেলানো হয়নি এমন ফাইল:",nolib:"পিডিএফ লাইব্রেরি লোড হয়নি। ইন্টারনেট দেখে পেজ রিলোড করুন।",gen:"প্যাকেজ তৈরি করুন",blocked:"এখনও প্যাকেজ তৈরি করা যাবে না:",ready:"সব পরীক্ষা ঠিক আছে। এখন প্যাকেজ তৈরি করা যাবে।",done:"প্যাকেজ তৈরি। ডাউনলোড করুন:",dlb:"ডাউনলোড",pages:"পৃষ্ঠা",start:"শুরু পৃষ্ঠা",cov:"Tender Document Package",made:"",inc:""}};
+let lang="en",uid=0,S={req:null,files:[],match:{},exp:{},msgs:[],pkg:null};
+const t=k=>T[lang][k],$=i=>document.getElementById(i);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const san=s=>String(s).replace(/[^\x20-\x7E\xA0-\xFF]/g,"?");
+const reqs=()=>S.req?S.req.requirements.slice().sort((a,b)=>a.order-b.order):[];
+const rt=r=>lang==="bn"?r.title_bn:r.title_en;
+function status(r){const f=S.match[r.id];if(!f)return r.mandatory?"missing":"notprov";
+ if(r.has_expiry){const e=S.exp[r.id];if(!e)return"need";if(e<S.req.tender.submission_deadline)return"expired"}return"ok"}
+const blocking=s=>["missing","need","expired"].includes(s);
+const fileById=id=>S.files.find(f=>f.id===id);
+async function sha(b){const h=await crypto.subtle.digest("SHA-256",b);return[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("")}
+function options(r){const other=Object.entries(S.match).filter(([k])=>k!==r.id).map(([,v])=>fileById(v));
+ const used=new Set(other.map(f=>f.id)),hashes=new Set(other.map(f=>f.hash));
+ return S.files.filter(f=>f.id===S.match[r.id]||(!used.has(f.id)&&!hashes.has(f.hash)))}
+function automatch(){if(!S.req)return;const stop=new Set(["the","and","for"]),cand=[];
+ for(const r of reqs()){if(S.match[r.id])continue;const tk=[...new Set(r.title_en.toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>=3&&!stop.has(w)).map(w=>w.slice(0,4)))];if(!tk.length)continue;
+  const thr=Math.min(tk.length,Math.max(2,Math.ceil(tk.length/2)));
+  for(const f of S.files){const nm=f.name.toLowerCase(),sc=tk.filter(w=>nm.includes(w)).length;if(sc>=thr)cand.push({r,f,sc})}}
+ cand.sort((a,b)=>b.sc-a.sc||a.r.order-b.r.order);
+ for(const c of cand){if(S.match[c.r.id])continue;if(!options(c.r).some(f=>f.id===c.f.id))continue;S.match[c.r.id]=c.f.id}}
+async function addFiles(list){if(typeof PDFLib==="undefined"){alert(t("nolib"));return}for(const f of list){
+ const bytes=new Uint8Array(await f.arrayBuffer());
+ if(!/\.pdf$/i.test(f.name)||String.fromCharCode(...bytes.slice(0,5))!=="%PDF-"){S.msgs.push({k:"notpdf",n:f.name});continue}
+ try{const d=await PDFLib.PDFDocument.load(bytes);S.files.push({id:++uid,name:f.name,bytes,pages:d.getPageCount(),hash:await sha(bytes)})}
+ catch(e){S.msgs.push({k:"bad",n:f.name})}}
+ automatch();S.pkg=null;render()}
+function render(){
+ $("ttl").textContent=t("ttl");$("lang").textContent=t("lang");document.documentElement.lang=lang;
+ const q=S.req,T0=q&&q.tender;let h=`<section><h2>${t("s1")}</h2><input type="file" id="rf" accept=".json,application/json" aria-label="${t("pick")}">`;
+ h+=q?`<dl><dt>${t("id")}</dt><dd>${esc(T0.tender_id)}</dd><dt>${t("title")}</dt><dd>${esc(T0.title)}</dd><dt>${t("pe")}</dt><dd>${esc(T0.procuring_entity)}</dd><dt>${t("bidder")}</dt><dd>${esc(T0.bidder)}</dd><dt>${t("dl")}</dt><dd>${esc(T0.submission_deadline)}</dd></dl>`:`<p>${t("none")}</p>`;
+ h+=`</section><section><h2>${t("s2")}</h2><div class="drop"><label>${t("drop")}<br><input type="file" id="pf" multiple accept="application/pdf,.pdf"></label></div>`;
+ h+=S.msgs.map(m=>`<div class="msg" role="alert">${esc(m.n)} ${t(m.k)}</div>`).join("");
+ h+=S.files.length?`<div class="tw"><table><tr><th>${t("fn")}</th><th>${t("pg")}</th><th></th></tr>`+S.files.map(f=>{
+  const d=S.files.filter(x=>x.hash===f.hash&&x.id!==f.id);
+  return`<tr><td>${esc(f.name)}${d.length?`<br><span class="dup">⚠ ${t("dup")} ${esc(d.map(x=>x.name).join(", "))}</span>`:""}</td><td>${f.pages}</td><td><button class="rm" data-rm="${f.id}">${t("rm")}</button></td></tr>`}).join("")+"</table></div>":`<p>${t("nofiles")}</p>`;
+ h+="</section>";
+ if(!q)h+=`<section><h2>${t("s3")}</h2><div class="why">${t("needreq")}</div></section>`;
+ if(q){const rs=reqs(),sts=rs.map(status);
+  const un=S.files.filter(f=>!Object.values(S.match).includes(f.id));
+  h+=`<section><h2>${t("s3")}</h2><button class="sec" id="auto">${t("auto")}</button><p>${un.length?t("unm")+" "+esc(un.map(f=>f.name).join(", ")):""}</p><div class="tw"><table><tr><th>#</th><th>${t("doc")}</th><th>${t("file")}</th><th>${t("exp")}</th><th>${t("status")}</th></tr>`;
+  rs.forEach((r,i)=>{h+=`<tr><td>${r.order}</td><td>${esc(rt(r))}<br><small>${r.mandatory?t("mand"):t("opt")}</small></td><td><select data-m="${r.id}" aria-label="${esc(rt(r))}"><option value="">${t("sel")}</option>${options(r).map(f=>`<option value="${f.id}"${S.match[r.id]===f.id?" selected":""}>${esc(f.name)}</option>`).join("")}</select></td><td>${r.has_expiry&&S.match[r.id]?`<input type="date" data-e="${r.id}" value="${S.exp[r.id]||""}">`:"—"}</td><td><span class="st ${sts[i]}">${t(sts[i])}</span></td></tr>`});
+  h+="</table></div></section>";
+  const bl=rs.filter((r,i)=>blocking(sts[i]));
+  h+=`<section><h2>${t("s4")}</h2>`+(bl.length?`<div class="why"><b>${t("blocked")}</b><ul>${bl.map(r=>`<li>${esc(rt(r))} — ${t(status(r))}</li>`).join("")}</ul></div>`:`<div class="good">${t("ready")}</div>`);
+  h+=`<button id="gen"${bl.length?" disabled":""}>${t("gen")}</button>`;
+  if(S.pkg)h+=`<p>${t("done")} <a class="btn" href="${S.pkg}" download="${esc(T0.tender_id)}_Package.pdf">${t("dlb")}: ${esc(T0.tender_id)}_Package.pdf</a></p>`;
+  h+="</section>"}
+ $("app").innerHTML=h}
+async function gen(){
+ const{PDFDocument,StandardFonts,rgb}=PDFLib,T0=S.req.tender;
+ const items=reqs().filter(r=>S.match[r.id]).map(r=>({r,f:fileById(S.match[r.id])}));
+ const total=1+items.reduce((s,i)=>s+i.f.pages,0);
+ const out=await PDFDocument.create(),font=await out.embedFont(StandardFonts.Helvetica),bold=await out.embedFont(StandardFonts.HelveticaBold);
+ const foot=(p,n)=>{const s=`${san(T0.tender_id)} | Page ${n} of ${total}`,w=font.widthOfTextAtSize(s,10);p.drawText(s,{x:(p.getWidth()-w)/2,y:14,size:10,font,color:rgb(.1,.1,.1)})};
+ const c=out.addPage([595.28,841.89]);let y=790;
+ c.drawText("Tender Document Package",{x:50,y,size:22,font:bold});y-=44;
+ const row=(k,v)=>{c.drawText(k+":",{x:50,y,size:11,font:bold});const s=san(v),n=Math.max(1,Math.ceil(font.widthOfTextAtSize(s,11)/340));c.drawText(s,{x:200,y,size:11,font,maxWidth:340,lineHeight:14});y-=14*n+8};
+ row("Tender ID",T0.tender_id);row("Title",T0.title);row("Procuring entity",T0.procuring_entity);row("Bidder",T0.bidder);row("Submission deadline",T0.submission_deadline);row("Date package made",new Date().toISOString().slice(0,10));
+ y-=14;c.drawText("Included documents",{x:50,y,size:13,font:bold});y-=22;
+ let start=2;items.forEach((it,i)=>{c.drawText(san(`${i+1}. ${it.r.title_en}  (${it.f.name}, ${it.f.pages} pg, from page ${start})`),{x:56,y,size:10.5,font,maxWidth:490});y-=18;start+=it.f.pages});
+ foot(c,1);let n=2;
+ for(const it of items){const emb=await out.embedPdf(it.f.bytes);
+  for(const e of emb){const p=out.addPage([e.width,e.height+34]);p.drawPage(e,{x:0,y:34});foot(p,n++)}}
+ const blob=new Blob([await out.save()],{type:"application/pdf"});
+ if(S.pkg)URL.revokeObjectURL(S.pkg);S.pkg=URL.createObjectURL(blob);render();const l=document.querySelector("a[download]");if(l)l.click()}
+document.addEventListener("change",async e=>{const a=e.target;
+ if(a.id==="rf"&&a.files[0]){try{const j=JSON.parse(await a.files[0].text());if(!j.tender||!Array.isArray(j.requirements))throw 0;S.req=j;S.match={};S.exp={};S.pkg=null;automatch()}catch(x){alert("Invalid requirements.json")}render()}
+ else if(a.id==="pf"){await addFiles([...a.files])}
+ else if(a.dataset.m){a.value?S.match[a.dataset.m]=+a.value:(delete S.match[a.dataset.m],delete S.exp[a.dataset.m]);S.pkg=null;render()}
+ else if(a.dataset.e){S.exp[a.dataset.e]=a.value;S.pkg=null;render()}});
+document.addEventListener("click",e=>{const a=e.target.closest("button");if(!a)return;
+ if(a.id==="lang"){lang=lang==="en"?"bn":"en";render()}
+ else if(a.id==="auto"){automatch();S.pkg=null;render()}
+ else if(a.id==="gen"){a.disabled=true;gen().catch(x=>{alert("Error: "+x.message);render()})}
+ else if(a.dataset.rm){const id=+a.dataset.rm;S.files=S.files.filter(f=>f.id!==id);for(const k in S.match)if(S.match[k]===id){delete S.match[k];delete S.exp[k]}S.pkg=null;render()}});
+render();
+</script></body></html>
