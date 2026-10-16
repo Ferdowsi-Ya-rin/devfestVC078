@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TenderMarket | Tender Package Builder</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <style>
+    :root {
+      --ink:#14232b; --mut:#5b6b73; --bg:#f3f6f7; --card:#fff; --line:#dfe6e8; --acc:#0d5c73; --acc-2:#0a4256; --ok:#1b7a3e; --bad:#b3261e; --warn:#9a6700; --soft:#eaf2f5; --shadow:0 12px 30px rgba(10,35,46,.08); --radius:18px; --max:1200px;
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#f5fafb 0%,#edf3f5 100%);color:var(--ink);font:16px/1.6 "Segoe UI","Noto Sans Bengali",system-ui,sans-serif}a{color:inherit;text-decoration:none}img{max-width:100%;display:block}button,select,input{font:inherit}.container{max-width:var(--max);margin:0 auto;padding:0 20px}.topbar{position:sticky;top:0;z-index:20;background:rgba(13,92,115,.94);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.12)}.topbar-inner{max-width:var(--max);margin:0 auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:#fff;letter-spacing:.02em}.brand-mark{width:26px;height:26px;display:grid;place-items:center;border-radius:8px;background:linear-gradient(135deg,#76d5ef,#1d7d95);font-size:.8rem}.nav{display:flex;align-items:center;gap:18px;color:rgba(255,255,255,.9);font-size:.95rem}.nav a{opacity:.9}.nav a:hover{opacity:1}.header-actions{display:flex;align-items:center;gap:10px}.btn,button,.button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:10px 18px;font-weight:600;cursor:pointer;transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;text-decoration:none}.btn:hover,button:hover,.button:hover{transform:translateY(-1px)}.btn-primary,button.primary{background:linear-gradient(135deg,var(--acc),var(--acc-2));color:#fff;box-shadow:0 10px 20px rgba(13,92,115,.18)}.btn-secondary,button.secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}.btn-soft{background:var(--soft);color:var(--acc);border:1px solid rgba(13,92,115,.18)}.btn-ghost{background:transparent;color:var(--acc);border:1px solid rgba(13,92,115,.34)}main{padding-bottom:60px}section{padding:40px 0}.hero{background:radial-gradient(circle at top left, rgba(118,213,239,.18), transparent 30%),linear-gradient(180deg,#f7fbfc 0%,#edf4f6 100%);border-bottom:1px solid rgba(20,35,43,.06)}.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;max-width:var(--max);margin:0 auto;padding:52px 20px 30px}.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--soft);border:1px solid rgba(13,92,115,.14);color:var(--acc);border-radius:999px;padding:7px 12px;font-size:.8rem;font-weight:700;letter-spacing:.02em}h1,h2,h3,h4,p{margin-top:0}h1{margin:16px 0 16px;font-size:clamp(2.4rem,5vw,4rem);line-height:1.05;letter-spacing:-.04em}h1 small{display:block;color:var(--acc);font-size:.74em}.lead{max-width:560px;font-size:1.1rem;color:var(--mut);margin-bottom:22px}.cta-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:22px}.hero-points{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(2,minmax(180px,1fr));gap:12px 18px;color:var(--ink);font-weight:600}.hero-points li::before{content:"✓";color:var(--ok);font-weight:900;margin-right:9px}.hero-card{background:linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.98));border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:18px}.dashboard-mini{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px}.mini-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.9rem;color:var(--mut)}.mini-card{background:linear-gradient(135deg,#edf6f8,#fff);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:12px}.mini-card h3{font-size:1.1rem;margin-bottom:8px;color:var(--ink)}.stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:14px}.stat-box{border:1px solid var(--line);border-radius:14px;background:#f9fbfb;padding:12px;text-align:center}.stat-box strong{display:block;font-size:1.4rem;color:var(--acc)}.stat-box span{color:var(--mut);font-size:.8rem}.logo-strip{background:rgba(255,255,255,.66);border-top:1px solid rgba(20,35,43,.04);border-bottom:1px solid rgba(20,35,43,.04)}.logo-list{max-width:var(--max);margin:0 auto;padding:16px 20px;display:flex;justify-content:center;flex-wrap:wrap;gap:18px 28px;color:rgba(20,35,43,.6);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:.8rem}.section-head{max-width:var(--max);margin:0 auto 24px;padding:0 20px}.section-head h2{font-size:clamp(1.9rem,3vw,2.7rem);letter-spacing:-.04em;margin-bottom:10px}.section-head p{color:var(--mut);margin:0;max-width:680px}.features-grid,.pricing-grid,.workflow-grid,.testimonial-grid,.faq-grid{max-width:var(--max);margin:0 auto;padding:0 20px}.features-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.feature-card,.pricing-card,.workflow-card,.testimonial-card,.market-card,.saved-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 8px 16px rgba(17,38,49,.03)}.feature-card{padding:20px}.feature-icon{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--soft);color:var(--acc);font-weight:800;margin-bottom:16px}.feature-card h3{margin-bottom:8px}.feature-card p{color:var(--mut);margin:0}.marketplace{background:linear-gradient(180deg, rgba(255,255,255,.4), rgba(244,248,249,.95))}.market-controls{max-width:var(--max);margin:0 auto 24px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.filter-row{display:flex;flex-wrap:wrap;gap:8px}.filter-btn{background:#fff;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-weight:600;cursor:pointer}.filter-btn.active{background:var(--acc);color:#fff;border-color:var(--acc)}.market-grid{max-width:var(--max);margin:0 auto;padding:0 20px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.market-card{overflow:hidden;padding:18px}.market-card.hidden{display:none}.market-tag{display:inline-block;background:var(--soft);color:var(--acc);border-radius:999px;padding:5px 10px;font-size:.72rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;margin-bottom:12px}.market-card h3{margin-bottom:8px}.market-card p{color:var(--mut);margin:0 0 14px}.meta-row{display:flex;justify-content:space-between;gap:8px;padding-top:10px;border-top:1px solid var(--line);color:var(--mut);font-size:.87rem}.market-card .btn{margin-top:18px;width:100%}.workspace-grid{max-width:var(--max);margin:0 auto;padding:0 20px;display:grid;grid-template-columns:.95fr 1.3fr;gap:18px}.summary-box,.saved-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:0 8px 16px rgba(17,38,49,.03)}.summary-box h3,.saved-panel h3{margin-bottom:16px}.summary-list{display:grid;gap:14px}.summary-item{display:flex;align-items:center;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--line)}.summary-item:last-child{border-bottom:0;padding-bottom:0}.summary-key{color:var(--mut);display:flex;align-items:center;gap:8px}.dot{width:10px;height:10px;border-radius:50%;background:var(--acc);display:inline-block}.summary-value{font-size:1.2rem;font-weight:800;color:var(--ink)}.saved-list{display:grid;gap:12px}.saved-card{padding:14px 16px}.saved-card header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}.saved-card h4{margin:0;font-size:1rem}.saved-card small{color:var(--mut);display:block;margin-bottom:6px}.saved-card .tag{display:inline-block;background:#ecf5ee;color:var(--ok);border-radius:999px;padding:4px 8px;font-size:.72rem;font-weight:700}.empty-state{color:var(--mut);border:1px dashed var(--line);border-radius:14px;padding:18px;background:#fbfcfc}.builder-shell{max-width:var(--max);margin:0 auto;padding:0 20px}.builder-box{background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.builder-top{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px 0;flex-wrap:wrap}.builder-top h2{margin:0}.builder-top .eyebrow{margin-bottom:8px}.builder-wrap{padding:24px}#app{display:block;width:100%}#app section{background:transparent;border:1px solid var(--line);border-radius:18px;padding:18px;margin:0 0 18px}#app h2{font-size:1.15rem;margin:0 0 10px}.drop{border:2px dashed var(--acc);border-radius:12px;padding:18px;text-align:center;margin-bottom:10px;background:rgba(13,92,115,.02)}button.rm{background:#fff;color:var(--bad);border:1px solid rgba(179,38,30,.45);padding:5px 10px;font-size:.9rem}.msg{background:#fde4e2;color:var(--bad);padding:8px 12px;border-radius:10px;margin:8px 0}.why,.good{border-radius:12px;padding:10px 14px;margin:10px 0}.why{background:#fff1cf}.good{background:#dff3e5}.why ul{margin:6px 0 0;padding-left:18px}.st{display:inline-block;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;font-size:.8rem}.ok{background:#dff3e5;color:var(--ok)}.missing,.expired{background:#fde4e2;color:var(--bad)}.need{background:#fff1cf;color:var(--warn)}.notprov{background:#e8edee;color:var(--mut)}.dup{color:var(--bad);font-weight:700}.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--mut);font-size:.82rem;letter-spacing:.04em;text-transform:uppercase}dl{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin:0}dt{color:var(--mut)}dd{margin:0}input[type="file"],select,input[type="date"]{width:100%;border-radius:12px;border:1px solid var(--line);background:#fff;padding:10px 12px;color:var(--ink)}select{min-width:180px}.workflow-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.workflow-card{padding:20px}.step-index{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:12px;background:var(--soft);color:var(--acc);font-weight:800;margin-bottom:10px}.workflow-card h3{margin-bottom:8px}.workflow-card p{margin:0;color:var(--mut)}.pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.pricing-card{padding:24px 20px}.pricing-card.popular{background:linear-gradient(180deg,#fff,#f4fafc);border-color:rgba(13,92,115,.4);box-shadow:0 12px 28px rgba(13,92,115,.08);position:relative}.pricing-card.popular::before{content:"Most popular";position:absolute;top:14px;right:16px;background:var(--acc);color:#fff;font-size:.7rem;font-weight:700;padding:4px 8px;border-radius:999px}.price{font-size:2.2rem;font-weight:900;letter-spacing:-.04em;margin:10px 0}.price small{font-size:.75rem;color:var(--mut)}.pricing-card ul{list-style:none;padding:0;margin:18px 0 20px;display:grid;gap:10px;color:var(--mut)}.pricing-card li::before{content:"✓";color:var(--ok);font-weight:900;margin-right:8px}.testimonial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.testimonial-card{padding:18px}.stars{color:#f7b500;letter-spacing:2px;margin-bottom:8px}.testimonial-card p{color:var(--mut);margin:0 0 16px}.person{display:flex;align-items:center;gap:10px}.avatar{width:38px;height:38px;display:grid;place-items:center;border-radius:50%;background:var(--soft);color:var(--acc);font-weight:800}.faq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.faq-item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px}.faq-item h3{margin-bottom:8px}.faq-item p{margin:0;color:var(--mut)}.cta-box{max-width:var(--max);margin:0 auto;padding:0 20px}.cta-card{background:linear-gradient(135deg,var(--acc),var(--acc-2));border-radius:28px;padding:28px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#fff;box-shadow:0 20px 35px rgba(13,92,115,.15)}.cta-card h2{margin:0 0 8px;font-size:clamp(1.8rem,3vw,2.6rem);letter-spacing:-.04em}.cta-card p{margin:0;color:rgba(255,255,255,.9)}footer{border-top:1px solid rgba(20,35,43,.08);padding:20px 0 40px;color:var(--mut);background:linear-gradient(180deg, rgba(255,255,255,.4), rgba(255,255,255,.55))}.footer-inner{max-width:var(--max);margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}@media (max-width:980px){.hero-grid,.workspace-grid,.features-grid,.market-grid,.workflow-grid,.pricing-grid,.testimonial-grid,.faq-grid{grid-template-columns:1fr 1fr}.hero-grid,.workspace-grid{grid-template-columns:1fr}}@media (max-width:720px){.nav{display:none}.features-grid,.market-grid,.workflow-grid,.pricing-grid,.testimonial-grid,.faq-grid{grid-template-columns:1fr}.cta-card{flex-direction:column;align-items:flex-start}.hero-points{grid-template-columns:1fr}.topbar-inner{padding-top:12px;padding-bottom:12px}#app section{padding:14px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="brand-mark">T</span><span>TenderMarket</span></div>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#features">Features</a>
+        <a href="#marketplace">Marketplace</a>
+        <a href="#builder">Builder</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <a href="#marketplace" class="btn btn-secondary">Browse tenders</a>
+        <a href="#builder" class="btn btn-primary">Build package</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">Tender workflow platform</span>
+          <h1>Bring all your tender files into one ready-to-submit package <small>without the hassle.</small></h1>
+          <p class="lead">Upload requirements, organize PDFs, validate deadlines, and generate a polished submission package from one clean workflow.</p>
+          <div class="cta-row">
+            <a href="#builder" class="btn btn-primary">Create package</a>
+            <a href="#marketplace" class="btn btn-soft">Explore tenders</a>
+          </div>
+          <ul class="hero-points">
+            <li>Auto-match documents</li>
+            <li>Expiry checks</li>
+            <li>One-click PDF export</li>
+            <li>Built for bidding teams</li>
+          </ul>
+        </div>
+        <div class="hero-card">
+          <div class="dashboard-mini">
+            <div class="mini-row"><span>Submission health</span><strong style="color:var(--ok)">Excellent</strong></div>
+            <div class="mini-card">
+              <h3>Procurement package</h3>
+              <div class="summary-key">Tender ID <span style="margin-left:auto; font-weight:700; color:var(--ink)">B-2048</span></div>
+            </div>
+            <div class="stat-row">
+              <div class="stat-box"><strong>18</strong><span>Files</span></div>
+              <div class="stat-box"><strong>95%</strong><span>Reviewed</span></div>
+              <div class="stat-box"><strong>4</strong><span>Missing</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="logo-strip">
+      <div class="logo-list" aria-label="Trusted by organizations">
+        <span>Dhaka Metro</span>
+        <span>UrbanWorks</span>
+        <span>BuildCore</span>
+        <span>Nova Infra</span>
+        <span>ProcureHub</span>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="section-head">
+        <span class="eyebrow">Why teams use it</span>
+        <h2>Built to make tender submission work easier and faster.</h2>
+      </div>
+      <div class="features-grid">
+        <article class="feature-card"><div class="feature-icon">01</div><h3>Quick document setup</h3><p>Open JSON requirements and upload all needed PDFs in a few clicks.</p></article>
+        <article class="feature-card"><div class="feature-icon">02</div><h3>Smart matching</h3><p>Auto-link files by name and let teams quickly adjust if needed.</p></article>
+        <article class="feature-card"><div class="feature-icon">03</div><h3>Deadline validation</h3><p>See which documents are missing, expired, or need attention before filing.</p></article>
+        <article class="feature-card"><div class="feature-icon">04</div><h3>Final PDF export</h3><p>Create a clean package with a cover page and included document list.</p></article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">Workspace</span>
+        <h2>Track the packages you prepare and reuse your past work.</h2>
+      </div>
+      <div class="workspace-grid">
+        <div class="summary-box">
+          <h3>Package snapshot</h3>
+          <div class="summary-list">
+            <div class="summary-item"><div class="summary-key"><span class="dot"></span> Active packages</div><div class="summary-value" id="activePackagesStat">0</div></div>
+            <div class="summary-item"><div class="summary-key"><span class="dot" style="background:var(--ok)"></span> Ready to submit</div><div class="summary-value" id="readyPackagesStat">0</div></div>
+            <div class="summary-item"><div class="summary-key"><span class="dot" style="background:var(--warn)"></span> Needs review</div><div class="summary-value" id="reviewPackagesStat">0</div></div>
+          </div>
+        </div>
+        <div class="saved-panel">
+          <h3>Saved packages</h3>
+          <div id="savedPackages" class="saved-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="builder">
+      <div class="builder-shell">
+        <div class="builder-box">
+          <div class="builder-top">
+            <div><span class="eyebrow">Package Builder</span><h2>Prepare your tender submission</h2></div>
+            <button class="btn btn-ghost" id="lang">বাংলা</button>
+          </div>
+          <div class="builder-wrap">
+            <div id="app"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>From uploaded files to final submission in four steps.</h2>
+      </div>
+      <div class="workflow-grid">
+        <article class="workflow-card"><div class="step-index">1</div><h3>Load requirements</h3><p>Import a tender JSON file and capture the key procurement details.</p></article>
+        <article class="workflow-card"><div class="step-index">2</div><h3>Upload documents</h3><p>Select the PDF files that belong to your bid or submission package.</p></article>
+        <article class="workflow-card"><div class="step-index">3</div><h3>Match and validate</h3><p>Assign the correct file to each requirement and confirm expiry information.</p></article>
+        <article class="workflow-card"><div class="step-index">4</div><h3>Generate package</h3><p>Export a professional, consolidated PDF ready for submission.</p></article>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="section-head">
+        <span class="eyebrow">FAQ</span>
+        <h2>Everything you need to know before you start.</h2>
+      </div>
+      <div class="faq-grid">
+        <article class="faq-item"><h3>Do I need a login?</h3><p>No. This version is built as a front-end experience without authentication, so you can use it immediately in the browser.</p></article>
+        <article class="faq-item"><h3>Can I generate final PDFs?</h3><p>Yes. Once your documents are matched and requirements are valid, you can export the final tender package as a PDF.</p></article>
+        <article class="faq-item"><h3>Does it work with requirements.json?</h3><p>Yes. The app expects a structured JSON tender file and validates it before matching documents.</p></article>
+        <article class="faq-item"><h3>Can it be expanded later?</h3><p>Absolutely. The current design is ready for backend storage, team workspaces, and payment-based product features.</p></article>
+      </div>
+    </section>
+
+    <section class="cta-box">
+      <div class="cta-card">
+        <div>
+          <h2>Build your next tender package with confidence.</h2>
+          <p>Upload requirements, match your files, and export a compliant package in minutes.</p>
+        </div>
+        <a href="#builder" class="btn btn-secondary">Start building</a>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:linear-gradient(180deg,#0d5c73 0%,#0a4256 100%); border-top: 1px solid rgba(255,255,255,.12); color:#fff;">
+    <div class="footer-inner" style="color:#fff;">
+      <div class="brand" style="color:#fff;"><span class="brand-mark" style="background:linear-gradient(135deg,#76d5ef,#1d7d95); color:#0a4256;">T</span><span>TenderMarket</span></div>
+      <span style="color:rgba(255,255,255,.8);">© 2026 TenderMarket. Built for smarter bidding.</span>
+    </div>
+  </footer>
+
+  <script>
+    const T={en:{ttl:"Tender Package Builder",lang:"বাংলা",s1:"1. Open the requirements file",pick:"Choose requirements.json",none:"No file opened yet.",id:"Tender ID",title:"Title",pe:"Procuring entity",bidder:"Bidder",dl:"Submission deadline",s2:"2. Upload PDF files",drop:"Choose PDF files (many at once)",fn:"File",pg:"Pages",rm:"Remove",dup:"Duplicate of",nofiles:"No files uploaded yet.",notpdf:"is not a PDF and was rejected.",bad:"is damaged or password-protected and was rejected.",s3:"3. Match files and enter expiry dates",doc:"Document",req:"Required",opt:"Optional",mand:"Mandatory",file:"File",exp:"Expiry date",status:"Status",sel:"— choose a file —",missing:"Missing",need:"Expiry date needed",expired:"Expired",notprov:"Not provided",ok:"OK",s4:"4. Make the package",needreq:"Open requirements.json in step 1 to start matching.",auto:"Auto-match by file name",unm:"Files not matched yet:",nolib:"The PDF library could not load. Check your internet connection and reload the page.",gen:"Generate package",blocked:"The package cannot be made yet:",ready:"All checks passed. You can generate the package.",done:"Package ready. Download it:",dlb:"Download",pages:"pages",start:"starts on page",cov:"Tender Document Package",made:"Date made",inc:"Included documents"},bn:{ttl:"টেন্ডার প্যাকেজ বিল্ডার",lang:"English",s1:"১. প্রয়োজনীয়তার ফাইল খুলুন",pick:"requirements.json বাছাই করুন",none:"এখনও কোনো ফাইল খোলা হয়নি।",id:"টেন্ডার আইডি",title:"শিরোনাম",pe:"ক্রয়কারী প্রতিষ্ঠান",bidder:"দরদাতা",dl:"জমার শেষ তারিখ",s2:"২. পিডিএফ ফাইল আপলোড করুন",drop:"পিডিএফ ফাইল বাছাই করুন (একসাথে অনেক)",fn:"ফাইল",pg:"পৃষ্ঠা",rm:"মুছুন",dup:"ডুপ্লিকেট:",nofiles:"এখনও কোনো ফাইল আপলোড হয়নি।",notpdf:"পিডিএফ নয়, তাই বাদ দেওয়া হয়েছে।",bad:"নষ্ট বা পাসওয়ার্ড দেওয়া, তাই বাদ দেওয়া হয়েছে।",s3:"৩. ফাইল মেলান ও মেয়াদের তারিখ দিন",doc:"ডকুমেন্ট",req:"প্রয়োজন",opt:"ঐচ্ছিক",mand:"বাধ্যতামূলক",file:"ফাইল",exp:"মেয়াদ শেষের তারিখ",status:"অবস্থা",sel:"— ফাইল বাছাই করুন —",missing:"অনুপস্থিত",need:"মেয়াদের তারিখ দরকার",expired:"মেয়াদোত্তীর্ণ",notprov:"দেওয়া হয়নি",ok:"ঠিক আছে",s4:"৪. প্যাকেজ তৈরি করুন",needreq:"মেলানো শুরু করতে ধাপ ১-এ requirements.json খুলুন।",auto:"ফাইলের নাম দেখে নিজে নিজে মেলান",unm:"এখনও মেলানো হয়নি এমন ফাইল:",nolib:"পিডিএফ লাইব্রেরি লোড হয়নি। ইন্টারনেট দেখে পেজ রিলোড করুন।",gen:"প্যাকেজ তৈরি করুন",blocked:"এখনও প্যাকেজ তৈরি করা যাবে না:",ready:"সব পরীক্ষা ঠিক আছে। এখন প্যাকেজ তৈরি করা যাবে।",done:"প্যাকেজ তৈরি। ডাউনলোড করুন:",dlb:"ডাউনলোড",pages:"পৃষ্ঠা",start:"শুরু পৃষ্ঠা",cov:"Tender Document Package",made:"",inc:""}};
+    const STORE_KEY='tender-market-packages';
+    const getSavedPackages=()=>{try{return JSON.parse(localStorage.getItem(STORE_KEY)||'[]');}catch{return[]}};
+    const savePackage=(payload)=>{const items=getSavedPackages();const fresh=[{id:Date.now(),title:payload.title,tenderId:payload.tenderId,date:payload.date,count:payload.count,status:payload.status},...items].slice(0,5);localStorage.setItem(STORE_KEY,JSON.stringify(fresh));renderSavedPackages();};
+    const renderSavedPackages=()=>{const items=getSavedPackages();const el=$('savedPackages');if(!el)return;if(!items.length){el.innerHTML='<div class="empty-state">No packages saved yet. Generate a tender package and it will appear here.</div>';return;}el.innerHTML=items.map(item=>`<article class="saved-card"><header><h4>${esc(item.title||'Tender package')}</h4><span class="tag">${esc(item.status||'Ready')}</span></header><small>${esc(item.tenderId||'Tender ID')}</small><small>${esc(item.date||'')} • ${item.count||0} documents</small></article>`).join('');const active=items.length,ready=items.filter(i=>i.status==='Ready').length,review=Math.max(0,active-ready);$('activePackagesStat').textContent=String(active);$('readyPackagesStat').textContent=String(ready);$('reviewPackagesStat').textContent=String(review);};
+    const renderMarketplace=(filter='all')=>{document.querySelectorAll('.market-card').forEach(card=>{const pass=filter==='all'||card.dataset.category===filter;card.classList.toggle('hidden',!pass);});document.querySelectorAll('.filter-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.filter===filter));};
+    document.querySelectorAll('.filter-btn').forEach(button=>button.addEventListener('click',()=>renderMarketplace(button.dataset.filter)));
+
+    let lang='en',uid=0,S={req:null,files:[],match:{},exp:{},msgs:[],pkg:null};
+    const t=k=>T[lang][k],$=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),san=s=>String(s).replace(/[^\x20-\x7E\xA0-\xFF]/g,'?');
+    const reqs=()=>S.req?S.req.requirements.slice().sort((a,b)=>a.order-b.order):[];
+    const rt=r=>lang==='bn'?r.title_bn:r.title_en;
+    function status(r){const f=S.match[r.id];if(!f)return r.mandatory?'missing':'notprov';if(r.has_expiry){const e=S.exp[r.id];if(!e)return'need';if(e<S.req.tender.submission_deadline)return'expired'}return'ok'}
+    const blocking=s=>['missing','need','expired'].includes(s);
+    const fileById=id=>S.files.find(f=>f.id===id);
+    async function sha(b){const h=await crypto.subtle.digest('SHA-256',b);return[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+    function options(r){const other=Object.entries(S.match).filter(([k])=>k!==r.id).map(([,v])=>fileById(v));const used=new Set(other.map(f=>f.id)),hashes=new Set(other.map(f=>f.hash));return S.files.filter(f=>f.id===S.match[r.id]||(!used.has(f.id)&&!hashes.has(f.hash)))}
+    function automatch(){if(!S.req)return;const stop=new Set(['the','and','for']),cand=[];for(const r of reqs()){if(S.match[r.id])continue;const tk=[...new Set(r.title_en.toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>=3&&!stop.has(w)).map(w=>w.slice(0,4)))];if(!tk.length)continue;const thr=Math.min(tk.length,Math.max(2,Math.ceil(tk.length/2)));for(const f of S.files){const nm=f.name.toLowerCase(),sc=tk.filter(w=>nm.includes(w)).length;if(sc>=thr)cand.push({r,f,sc})}}cand.sort((a,b)=>b.sc-a.sc||a.r.order-b.r.order);for(const c of cand){if(S.match[c.r.id])continue;if(!options(c.r).some(f=>f.id===c.f.id))continue;S.match[c.r.id]=c.f.id}}
+    async function addFiles(list){if(typeof PDFLib==='undefined'){alert(t('nolib'));return}for(const f of list){const bytes=new Uint8Array(await f.arrayBuffer());if(!/\.pdf$/i.test(f.name)||String.fromCharCode(...bytes.slice(0,5))!=='%PDF-'){S.msgs.push({k:'notpdf',n:f.name});continue}try{const d=await PDFLib.PDFDocument.load(bytes);S.files.push({id:++uid,name:f.name,bytes,pages:d.getPageCount(),hash:await sha(bytes)})}catch(e){S.msgs.push({k:'bad',n:f.name})}}automatch();S.pkg=null;render();}
+    function s4(){const T0=S.req.tender,rs=reqs(),bl=rs.filter(r=>blocking(status(r)));let h=`<h2>${t('s4')}</h2>`+(bl.length?`<div class="why"><b>${t('blocked')}</b><ul>${bl.map(r=>`<li>${esc(rt(r))} — ${t(status(r))}</li>`).join('')}</ul></div>`:`<div class="good">${t('ready')}</div>`);h+=`<button class="btn btn-primary" id="gen"${bl.length?' disabled':''}>${t('gen')}</button>`;if(S.pkg)h+=`<p>${t('done')} (${S.total} ${t('pages')}) <a class="btn btn-soft" href="${S.pkg}" download="${esc(T0.tender_id)}_Package.pdf">${t('dlb')}: ${esc(T0.tender_id)}_Package.pdf</a></p>`;return h;}
+    function upd(){reqs().forEach(r=>{const e=document.querySelector(`[data-st="${r.id}"]`);if(e){const k=status(r);e.className='st '+k;e.textContent=t(k)}});$('s4').innerHTML=s4();}
+    function render(){const q=S.req,T0=q&&q.tender;let h=`<section><h2>${t('s1')}</h2><input type="file" id="rf" accept=".json,application/json" aria-label="${t('pick')}">`;h+=q?`<dl><dt>${t('id')}</dt><dd>${esc(T0.tender_id)}</dd><dt>${t('title')}</dt><dd>${esc(T0.title)}</dd><dt>${t('pe')}</dt><dd>${esc(T0.procuring_entity)}</dd><dt>${t('bidder')}</dt><dd>${esc(T0.bidder)}</dd><dt>${t('dl')}</dt><dd>${esc(T0.submission_deadline)}</dd></dl>`:`<p>${t('none')}</p>`;h+=`</section><section><h2>${t('s2')}</h2><div class="drop"><label>${t('drop')}<br><input type="file" id="pf" multiple accept="application/pdf,.pdf"></label></div>`;h+=S.msgs.map(m=>`<div class="msg" role="alert">${esc(m.n)} ${t(m.k)}</div>`).join('');h+=S.files.length?`<div class="tw"><table><tr><th>${t('fn')}</th><th>${t('pg')}</th><th></th></tr>`+S.files.map(f=>{const d=S.files.filter(x=>x.hash===f.hash&&x.id!==f.id);return`<tr><td>${esc(f.name)}${d.length?`<br><span class="dup">⚠ ${t('dup')} ${esc(d.map(x=>x.name).join(', '))}</span>`:''}</td><td>${f.pages}</td><td><button class="rm" data-rm="${f.id}">${t('rm')}</button></td></tr>`}).join('')+'</table></div>':`<p>${t('nofiles')}</p>`;h+='</section>';if(!q)h+=`<section><h2>${t('s3')}</h2><div class="why">${t('needreq')}</div></section>`;if(q){const rs=reqs(),sts=rs.map(status),un=S.files.filter(f=>!Object.values(S.match).includes(f.id));h+=`<section><h2>${t('s3')}</h2><button class="btn btn-soft" id="auto">${t('auto')}</button><p>${un.length?t('unm')+' '+esc(un.map(f=>f.name).join(', ')):''}</p><div class="tw"><table><tr><th>#</th><th>${t('doc')}</th><th>${t('file')}</th><th>${t('exp')}</th><th>${t('status')}</th></tr>`;rs.forEach((r,i)=>{h+=`<tr><td>${r.order}</td><td>${esc(rt(r))}<br><small>${r.mandatory?t('mand'):t('opt')}</small></td><td><select data-m="${r.id}" aria-label="${esc(rt(r))}"><option value="">${t('sel')}</option>${options(r).map(f=>`<option value="${f.id}"${S.match[r.id]===f.id?' selected':''}>${esc(f.name)}</option>`).join('')}</select></td><td>${r.has_expiry&&S.match[r.id]?`<input type="date" min="1900-01-01" max="9999-12-31" data-e="${r.id}" value="${S.exp[r.id]||''}">`:'—'}</td><td><span data-st="${r.id}" class="st ${sts[i]}">${t(sts[i])}</span></td></tr>`});h+='</table></div></section>';h+=`<section id="s4">${s4()}</section>`} $('app').innerHTML=h; $('lang').textContent=t('lang'); document.documentElement.lang=lang; }
+    async function gen(){const {PDFDocument,StandardFonts,rgb,degrees}=PDFLib,T0=S.req.tender;const items=reqs().filter(r=>S.match[r.id]).map(r=>({r,f:fileById(S.match[r.id])}));const total=1+items.reduce((s,i)=>s+i.f.pages,0);const out=await PDFDocument.create(),font=await out.embedFont(StandardFonts.Helvetica),bold=await out.embedFont(StandardFonts.HelveticaBold);const foot=(p,n)=>{const s=`${san(T0.tender_id)} | Page ${n} of ${total}`,w=font.widthOfTextAtSize(s,10);p.drawText(s,{x:(p.getWidth()-w)/2,y:14,size:10,font,color:rgb(.1,.1,.1)})};const wrap=(s,size,f,mw)=>{const o=[];let cur='';for(const w of san(s).split(/\s+/)){const x=cur?cur+' '+w:w;if(f.widthOfTextAtSize(x,size)>mw&&cur){o.push(cur);cur=w}else cur=x}if(cur)o.push(cur);return o};const c=out.addPage([595.28,841.89]);let y=790;c.drawText('Tender Document Package',{x:50,y,size:22,font:bold});y-=44;const row=(k,v)=>{c.drawText(k+':',{x:50,y,size:11,font:bold});const ls=wrap(v,11,font,340);ls.forEach((l,i)=>c.drawText(l,{x:200,y:y-i*14,size:11,font}));y-=14*ls.length+8};row('Tender ID',T0.tender_id);row('Title',T0.title);row('Procuring entity',T0.procuring_entity);row('Bidder',T0.bidder);row('Submission deadline',T0.submission_deadline);row('Date package made',new Date().toISOString().slice(0,10));y-=10;c.drawText('Included documents',{x:50,y,size:13,font:bold});y-=20;let st=2;const lines=items.map((it,i)=>{const s=`${i+1}. ${it.r.title_en} (${it.f.name}) - ${it.f.pages} page${it.f.pages>1?'s':''}, starts on page ${st}`;st+=it.f.pages;return s});let fs=10.5,all;for(;;){all=lines.map(s=>wrap(s,fs,font,480));if(all.flat().length*(fs+4)<=y-45||fs<=6)break;fs-=.5}all.forEach(ls=>{ls.forEach((l,j)=>{c.drawText(l,{x:j?72:56,y,size:fs,font});y-=fs+4});y-=2});foot(c,1);let n=2;for(const it of items){try{const src=await PDFDocument.load(it.f.bytes),emb=await out.embedPdf(src,src.getPageIndices());for(let i=0;i<emb.length;i++){const e=emb[i],r=((src.getPage(i).getRotation().angle%360)+360)%360,sw=r%180?e.height:e.width,sh=r%180?e.width:e.height;const p=out.addPage([sw,sh+34]);const o=r===90?{x:0,y:34+e.width,rotate:degrees(-90)}:r===180?{x:e.width,y:34+e.height,rotate:degrees(180)}:r===270?{x:e.height,y:34,rotate:degrees(90)}:{x:0,y:34};p.drawPage(e,o);foot(p,n++)}}catch(x){throw new Error(it.f.name+': '+x.message)}}const bytes=await out.save();const chk=await PDFDocument.load(bytes);if(chk.getPageCount()!==total)throw new Error('Page count mismatch '+chk.getPageCount()+' vs '+total);const blob=new Blob([bytes],{type:'application/pdf'});if(S.pkg)URL.revokeObjectURL(S.pkg);S.pkg=URL.createObjectURL(blob);S.total=total;savePackage({title:T0.title,tenderId:T0.tender_id,date:new Date().toISOString().slice(0,10),count:items.length,status:'Ready'});render();const l=document.querySelector('a[download]');if(l)l.click();}
+    document.addEventListener('change',async e=>{const a=e.target;if(a.id==='rf'&&a.files[0]){try{const j=JSON.parse(await a.files[0].text());if(!j.tender||!Array.isArray(j.requirements))throw 0;S.req=j;S.match={};S.exp={};S.pkg=null;automatch();}catch(x){alert('Invalid requirements.json')}render();}else if(a.id==='pf'){await addFiles([...a.files]);}else if(a.dataset.m){a.value?S.match[a.dataset.m]=+a.value:(delete S.match[a.dataset.m],delete S.exp[a.dataset.m]);S.pkg=null;render();}else if(a.dataset.e){S.exp[a.dataset.e]=a.value;S.pkg=null;upd();}});
+    document.addEventListener('click',e=>{const a=e.target.closest('button');if(!a)return;if(a.id==='lang'){lang=lang==='en'?'bn':'en';render();}else if(a.id==='auto'){automatch();S.pkg=null;render();}else if(a.id==='gen'){a.disabled=true;gen().catch(x=>{alert('Error: '+x.message);render();});}else if(a.dataset.rm){const id=+a.dataset.rm;S.files=S.files.filter(f=>f.id!==id);for(const k in S.match)if(S.match[k]===id){delete S.match[k];delete S.exp[k]}S.pkg=null;render();}});
+    renderMarketplace();renderSavedPackages();render();
+  </script>
+</body>
+</html>
